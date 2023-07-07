@@ -16,3 +16,13 @@ pytz==2023.3
 qrcode==7.4.2
 typing_extensions==4.7.1
 yarl==1.9.2
+
+git config --global user.name "dilshodev3234"
+    git config --global user.email "Adilshod3234@gmail.com"
+
+    ssh -T git@github.com
+
+
+    ssh-keygen -t rsa -b 4096 -C "absaitovdev@gmail.com"
+
+
