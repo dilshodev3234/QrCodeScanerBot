@@ -2,6 +2,7 @@ import os
 from multiprocessing.pool import Pool
 
 import qrcode
+
 from fpdf import FPDF
 
 from db.model import Qrcodes
