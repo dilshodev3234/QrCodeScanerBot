@@ -7,15 +7,15 @@ load_dotenv()
 
 
 class DB:
-    # con = psycopg2.connect(
-    #     dbname=os.getenv('DB_NAME'),
-    #     user=os.getenv('DB_USER'),
-    #     password=os.getenv('DB_PASSWORD'),
-    #     host=os.getenv('DB_HOST'),
-    #     port=os.getenv("DB_PORT"),
-    # )
+    con = psycopg2.connect(
+        dbname=os.getenv('DB_NAME'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        host=os.getenv('DB_HOST'),
+        port=os.getenv("DB_PORT"),
+    )
     # con = sqlite3.connect("/root/QrCodeScanerBot/db/project.sqlite")
-    con = sqlite3.connect("/home/dilshod/Music/QrCodeScanerBot/db/project.sqlite")
+    # con = sqlite3.connect("/home/dilshod/Music/QrCodeScanerBot/db/project.sqlite")
 
 
     cur = con.cursor()
@@ -26,7 +26,7 @@ class DB:
     );"""
 
     table2 = """create table if not exists users(
-        id integer primary key autoincrement,
+        id serial primary key,
         user_id varchar(255),
         name varchar(50),
         phone varchar(50),
@@ -40,7 +40,7 @@ class DB:
     def select(self, qr_code_id):
         fields = ','.join(self.fields) if self.fields else '*'
         table_name = self.__class__.__name__.lower()
-        query = f"""select {fields} from {table_name} where id=?"""
+        query = f"""select {fields} from {table_name} where id=%s"""
         self.cur.execute(query, (qr_code_id,))
 
         return self.cur
@@ -49,7 +49,7 @@ class DB:
         fields = ','.join(params.keys())
         values = tuple(params.values())
         table_name = self.__class__.__name__.lower()
-        query = f"""insert into {table_name}({fields}) values ({','.join(['?'] * len(params))})"""
+        query = f"""insert into {table_name}({fields}) values ({','.join(['%s'] * len(params))})"""
         self.cur.execute(query, values)
         self.con.commit()
 
@@ -57,9 +57,9 @@ class DB:
         table_name = self.__class__.__name__.lower()
         f = list(kwargs.keys())
         f.append(' ')
-        set_fields = " = ?,".join(f).strip(', ')
+        set_fields = " = %s,".join(f).strip(', ')
         params = list(kwargs.values())
         params.append(qrcode_id)
-        query = f"""update {table_name} set {set_fields} where id=?"""
+        query = f"""update {table_name} set {set_fields} where id=%s"""
         self.cur.execute(query, params)
         self.con.commit()

@@ -46,5 +46,5 @@ async def phone_handler(msg: types.Message, state: FSMContext):
 Aksiya 25 sentabr kuni yakunlanadi!
 30 sentabr kuni jonli efirda o’ynaladi, aloqada bo’ling! OMAD!"""
     await msg.answer(text=f"<b>{text}</b>", parse_mode="HTML")
-    Users().insert_into(user_id=str(msg.from_user.id), name=data['name'], phone=data['phone'], qrcode_id=data['qrcode_id'])
     await state.finish()
+    Users().insert_into(user_id=str(msg.from_user.id), name=data['name'], phone=data['phone'], qrcode_id=data['qrcode_id'])
