@@ -9,10 +9,11 @@ from db.model import Qrcodes, Users
 async def start_handler(msg: types.Message, state: FSMContext): 
     deep_user = msg.get_args()
     if deep_user != "":
-            qrcodes = Qrcodes('active').select(deep_user).fetchone()
+            qrcodes = Qrcodes('active').select(int(deep_user)).fetchone()
             if qrcodes:
                 if qrcodes[0]:
                     await msg.answer(text=f"<b>Bu QR-code ishlatilgan!</b>", parse_mode="HTML")
+		    
                 else:
                     await msg.answer_photo(photo= "https://telegra.ph/file/d2a51afb3fab6e7c0c95e.png",
                         caption=f"""<b>Assalomu aleykum hurmatli mijoz!
@@ -21,7 +22,7 @@ Ishtirokchiga aylanish uchun ISM SHARIFINGIZNI va TELAFON RAQAMINGIZNI kiriting!
                         parse_mode="HTML")
                     await state.set_state("name")
                     async with state.proxy() as data:
-                        data["qrcode_id"] = deep_user[0]
+                        data["qrcode_id"] = deep_user
                     Qrcodes().update(qrcode_id=deep_user, active=True)
                     await msg.answer(text=f"<b>Ro'yhatdan o'tishni boshlimiz 😊</b>", parse_mode="HTML")
                     await msg.answer(text=f"<b>Ismingizni kiriting ✍️:</b>", parse_mode="HTML")
