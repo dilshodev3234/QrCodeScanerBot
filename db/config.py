@@ -35,11 +35,11 @@ class DB:
     cur.execute(table2)
     con.commit()
 
-    def select(self):
+    def select(self, qr_code_id):
         fields = ','.join(self.fields) if self.fields else '*'
         table_name = self.__class__.__name__.lower()
-        query = f"""select {fields} from {table_name}"""
-        self.cur.execute(query)
+        query = f"""select {fields} from {table_name} where id=?"""
+        self.cur.execute(query , (qr_code_id,))
         return self.cur
 
     def insert_into(self, **params):
