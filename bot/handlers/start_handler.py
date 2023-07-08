@@ -6,17 +6,13 @@ from db.model import Qrcodes, Users
 
 
 @dp.message_handler(CommandStart())
-async def start_handler(msg: types.Message, state: FSMContext):
-
-
-    qrcodes = Qrcodes().select()
+async def start_handler(msg: types.Message, state: FSMContext): 
     deep_user = msg.get_args()
     if deep_user != "":
-        for i in qrcodes:
-            if deep_user == str(i[0]):
-                if i[1]:
+            qrcodes = Qrcodes('active').select(deep_user)
+            if qrcodes.fetchone():
+                if qrcodes[0]:
                     await msg.answer(text=f"<b>Bu QR-code ishlatilgan!</b>", parse_mode="HTML")
-
                 else:
                     await msg.answer_photo(photo= "https://telegra.ph/file/d2a51afb3fab6e7c0c95e.png",
                         caption=f"""<b>Assalomu aleykum hurmatli mijoz!

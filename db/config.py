@@ -42,6 +42,7 @@ class DB:
         table_name = self.__class__.__name__.lower()
         query = f"""select {fields} from {table_name} where id=?"""
         self.cur.execute(query, (qr_code_id,))
+
         return self.cur
 
     def insert_into(self, **params):
