@@ -14,7 +14,7 @@ class DB:
     #     host=os.getenv('DB_HOST'),
     #     port=os.getenv("DB_PORT"),
     # )
-    con = sqlite3.connect("/home/dilshod/Music/QrCodeScanerBot/db/project.sqlite")
+    con = sqlite3.connect("/root/QrCodeScanerBot/db/project.sqlite")
 
     cur = con.cursor()
 
